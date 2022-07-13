@@ -3,6 +3,7 @@ import { CreateNoteData } from "../repositories/notesRepository.js";
 import { UserToken } from "../services/credentialsService.js";
 import {
   createNoteService,
+  deleteNoteService,
   getNotesService,
 } from "../services/notesService.js";
 
@@ -27,4 +28,10 @@ export async function getNotes(req: Request, res: Response) {
     res.status(200).send(credentials);
   }
 }
-export async function deleteNotes(req: Request, res: Response) {}
+export async function deleteNotes(req: Request, res: Response) {
+  const user: UserToken = res.locals.user;
+
+  const { id } = req.params;
+  await deleteNoteService(user, parseInt(id));
+  res.sendStatus(200);
+}

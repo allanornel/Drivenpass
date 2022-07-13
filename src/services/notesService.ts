@@ -1,5 +1,6 @@
 import {
   CreateNoteData,
+  deleteById,
   findById,
   findByUserId,
   Notes,
@@ -35,6 +36,12 @@ export async function getNotesService(user: UserToken, id?: number) {
     let notes = await findByUserId(user.id);
     return notes;
   }
+}
+
+export async function deleteNoteService(user: UserToken, id: number) {
+  const note = await findNoteById(id);
+  checkUserId(note, user.id);
+  await deleteById(id);
 }
 
 async function findNoteById(id: number) {
