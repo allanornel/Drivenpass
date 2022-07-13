@@ -4,6 +4,7 @@ import {
   createCredentialService,
   getCredentialsService,
   UserToken,
+  deleteCredentialService,
 } from "../services/credentialsService.js";
 
 export async function createCredential(req: Request, res: Response) {
@@ -29,4 +30,11 @@ export async function getCredentials(req: Request, res: Response) {
     console.log(credentials);
     res.status(200).send(credentials);
   }
+}
+
+export async function deleteCredentials(req: Request, res: Response) {
+  const user: UserToken = res.locals.user;
+  const { id } = req.params;
+  await deleteCredentialService(user, parseInt(id));
+  res.sendStatus(200);
 }

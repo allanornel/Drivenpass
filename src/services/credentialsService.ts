@@ -1,11 +1,13 @@
 import {
   CreateCredentialData,
+  deleteById,
   find,
   findById,
   findByTitle,
   insert,
 } from "../repositories/credentialsRepository.js";
 import Cryptr from "cryptr";
+import { Credentials } from "../repositories/credentialsRepository.js";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 export interface UserToken {
@@ -34,13 +36,8 @@ export async function createCredentialService(
 
 export async function getCredentialsService(user: UserToken, id?: number) {
   if (id) {
-    const credential = await findById(user, id);
-    if (!credential)
-      throw {
-        type: "Not Found or Not Authorized",
-        message: "Credencial não encontrada ou não pertecente ao usuário",
-        statusCode: 404,
-      };
+    const credential = await findCredentialById(id);
+    checkUserId(credential, user.id);
     credential.password = cryptr.decrypt(credential.password);
     return credential;
   } else {
@@ -50,4 +47,30 @@ export async function getCredentialsService(user: UserToken, id?: number) {
     });
     return credentials;
   }
+}
+
+async function findCredentialById(id: number) {
+  const credential = await findById(id);
+  if (!credential)
+    throw {
+      type: "Not Found",
+      message: "Credencial não encontrada!",
+      statusCode: 404,
+    };
+  return credential;
+}
+
+async function checkUserId(credential: Credentials, userId: number) {
+  if (credential.userId !== userId)
+    throw {
+      type: "Unathourized",
+      message: "Credencial não pertence ao usuário!",
+      statusCode: 401,
+    };
+}
+
+export async function deleteCredentialService(user: UserToken, id: number) {
+  const credential = await findCredentialById(id);
+  checkUserId(credential, user.id);
+  await deleteById(id);
 }

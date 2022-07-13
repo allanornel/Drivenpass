@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createCredential,
   getCredentials,
+  deleteCredentials,
 } from "../controllers/credentialsController.js";
 import { validateToken } from "../middlewares/authMiddleware.js";
 import { validateSchema } from "../middlewares/validateSchema.js";
@@ -16,6 +17,6 @@ credentialsRouter.post(
   createCredential
 );
 credentialsRouter.get("/credentials", validateToken, getCredentials);
-credentialsRouter.delete("/credentials/:id", validateToken);
+credentialsRouter.delete("/credentials/:id", validateToken, deleteCredentials);
 
 export default credentialsRouter;

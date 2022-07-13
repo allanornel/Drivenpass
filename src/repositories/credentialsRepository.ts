@@ -20,10 +20,10 @@ export async function find(user: UserToken) {
   return result.rows;
 }
 
-export async function findById(user: UserToken, id: number) {
+export async function findById(id: number) {
   const result = await db.query<Credentials>(
-    `SELECT * FROM credentials WHERE id=$1 AND "userId"=$2`,
-    [id, user.id]
+    `SELECT * FROM credentials WHERE id=$1 `,
+    [id]
   );
   return result.rows[0];
 }
@@ -46,4 +46,8 @@ export async function insert(
     `INSERT INTO credentials ("userId", title, url, username, password) VALUES ($1, $2, $3, $4, $5)`,
     [userId, title, url, username, password]
   );
+}
+
+export async function deleteById(id: number) {
+  await db.query(`DELETE FROM credentials WHERE id=$1`, [id]);
 }
