@@ -3,13 +3,13 @@ import {
   deleteById,
   findById,
   findByUserId,
-  Notes,
 } from "../repositories/notesRepository.js";
 import { UserToken } from "./credentialsService.js";
 import {
   findByTitleAndUserId,
   insert,
 } from "./../repositories/notesRepository.js";
+import { notes } from "@prisma/client";
 
 export async function createNoteService(
   noteData: CreateNoteData,
@@ -55,7 +55,7 @@ async function findNoteById(id: number) {
   return note;
 }
 
-function checkUserId(note: Notes, userId: number) {
+function checkUserId(note: notes, userId: number) {
   if (note.userId !== userId)
     throw {
       type: "Unathourized",

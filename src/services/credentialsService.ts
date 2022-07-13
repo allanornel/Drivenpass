@@ -1,14 +1,13 @@
 import {
   CreateCredentialData,
   deleteById,
-  find,
+  findByUserId,
   findById,
   findByTitleAndUserId,
   insert,
 } from "../repositories/credentialsRepository.js";
 import Cryptr from "cryptr";
-import { Credentials } from "../repositories/credentialsRepository.js";
-import { string } from "joi";
+import { credentials } from "@prisma/client";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 export interface UserToken {
@@ -42,7 +41,7 @@ export async function getCredentialsService(user: UserToken, id?: number) {
     credential.password = cryptr.decrypt(credential.password);
     return credential;
   } else {
-    let credentials = await find(user);
+    let credentials = await findByUserId(user);
     credentials = credentials.map((c) => {
       return { ...c, password: cryptr.decrypt(c.password) };
     });
@@ -61,7 +60,7 @@ async function findCredentialById(id: number) {
   return credential;
 }
 
-async function checkUserId(credential: Credentials, userId: number) {
+async function checkUserId(credential: credentials, userId: number) {
   if (credential.userId !== userId)
     throw {
       type: "Unathourized",
