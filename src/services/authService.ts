@@ -4,6 +4,10 @@ import {
   insert,
 } from "../repositories/authRepository.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const salt = 10;
 
@@ -20,4 +24,27 @@ export async function signUpService(userData: CreateUserData) {
   await insert(userData);
 }
 
-export async function signInService() {}
+export async function signInService(userData: CreateUserData) {
+  const { email, password } = userData;
+  const user = await findByEmail(email);
+  console.log(user);
+  if (!user)
+    throw {
+      type: "Wrong email/password",
+      message: "Email/Senha incorretos",
+      statusCode: 422,
+    };
+
+  if (!(await bcrypt.compare(password, user.password)))
+    throw {
+      type: "Wrong email/password",
+      message: "Email/Senha incorretos",
+      statusCode: 422,
+    };
+
+  const token = jwt.sign({ id: user.id, email }, process.env.SECRET_KEY, {
+    expiresIn: 60 * 60 * 24,
+  });
+
+  return token;
+}
