@@ -10,6 +10,6 @@ const prodConfig = {
   ssl: { rejectUnauthorized: false },
 };
 
-export const connection = new Pool(
+export const db = new Pool(
   process.env.MODE === "PROD" ? prodConfig : devConfig
 );
