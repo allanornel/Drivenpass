@@ -12,7 +12,9 @@ dotenv.config();
 const salt = 10;
 
 export async function signUpService(userData: CreateUserData) {
-  const checkEmail = await findByEmail(userData.email);
+  userData.email = userData.email.toLowerCase();
+  const { email, password } = userData;
+  const checkEmail = await findByEmail(email);
   if (checkEmail)
     throw {
       type: "User with this email already exists",
@@ -20,7 +22,7 @@ export async function signUpService(userData: CreateUserData) {
       statusCode: 422,
     };
 
-  userData.password = await bcrypt.hash(userData.password, salt);
+  userData.password = await bcrypt.hash(password, salt);
   await insert(userData);
 }
 
