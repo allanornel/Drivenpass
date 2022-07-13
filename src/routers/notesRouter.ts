@@ -1,12 +1,22 @@
 import { Router } from "express";
-import { validateToken } from "../middlewares/authMiddleware";
-import { validateSchema } from "../middlewares/validateSchema";
-import { createNoteSchema } from "../schemas/notesSchema";
+import {
+  createNotes,
+  deleteNotes,
+  getNotes,
+} from "../controllers/notesController.js";
+import { validateToken } from "../middlewares/authMiddleware.js";
+import { validateSchema } from "../middlewares/validateSchema.js";
+import { createNoteSchema } from "../schemas/notesSchema.js";
 
 const notesRouter = Router();
 
-notesRouter.post("/notes", validateToken, validateSchema(createNoteSchema));
-notesRouter.get("/notes", validateToken);
-notesRouter.delete("/notes/:id", validateToken);
+notesRouter.post(
+  "/notes",
+  validateToken,
+  validateSchema(createNoteSchema),
+  createNotes
+);
+notesRouter.get("/notes", validateToken, getNotes);
+notesRouter.delete("/notes/:id", validateToken, deleteNotes);
 
 export default notesRouter;

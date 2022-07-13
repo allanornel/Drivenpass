@@ -28,10 +28,10 @@ export async function findById(id: number) {
   return result.rows[0];
 }
 
-export async function findByTitle(title: string) {
+export async function findByTitleAndUserId(title: string, userId: number) {
   const result = await db.query<Credentials>(
-    `SELECT * FROM credentials WHERE title=$1`,
-    [title]
+    `SELECT * FROM credentials WHERE title=$1 AND "userId"=$2`,
+    [title, userId]
   );
 
   return result.rows[0];

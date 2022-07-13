@@ -3,11 +3,12 @@ import {
   deleteById,
   find,
   findById,
-  findByTitle,
+  findByTitleAndUserId,
   insert,
 } from "../repositories/credentialsRepository.js";
 import Cryptr from "cryptr";
 import { Credentials } from "../repositories/credentialsRepository.js";
+import { string } from "joi";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 export interface UserToken {
@@ -21,11 +22,11 @@ export async function createCredentialService(
 ) {
   const { title, url, username, password } = credentialData;
 
-  const verifTitle = await findByTitle(title);
+  const verifTitle = await findByTitleAndUserId(title, user.id);
   if (verifTitle)
     throw {
       type: "Credentials with this title already exists",
-      message: "Titulo já cadastrado",
+      message: "Titulo já cadastrado para esse usuário",
       statusCode: 422,
     };
 

@@ -20,9 +20,7 @@ export async function getCredentials(req: Request, res: Response) {
   if (req.query && req.query.id) {
     id = (req.query as any).id;
   }
-
   if (id) {
-    console.log("entrou");
     const credential = await getCredentialsService(user, parseInt(id));
     res.status(200).send(credential);
   } else {
