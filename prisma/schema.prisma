@@ -16,6 +16,8 @@ model users {
   password    String
   credentials credentials[]
   notes       notes[]
+  wifis       wifis[]
+  cards       cards[]
 }
 
 model credentials {
@@ -36,6 +38,38 @@ model notes {
   annotation String
   user       users  @relation(fields: [userId], references: [id])
   userId     Int
+
+  @@unique([userId, title])
+}
+
+model wifis {
+  id       Int    @id @default(autoincrement())
+  title    String
+  name     String
+  password String
+  userId   Int
+  user     users  @relation(fields: [userId], references: [id])
+
+  @@unique([userId, title])
+}
+
+enum cardType {
+  debit
+  credit
+  both
+}
+
+model cards {
+  id             Int      @id @default(autoincrement())
+  title          String
+  number         String
+  securityCode   String
+  expirationDate String
+  password       String
+  isVirtual      Boolean
+  type           cardType
+  userId         Int
+  user           users    @relation(fields: [userId], references: [id])
 
   @@unique([userId, title])
 }

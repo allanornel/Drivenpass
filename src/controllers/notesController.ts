@@ -24,7 +24,6 @@ export async function getNotes(req: Request, res: Response) {
     res.status(200).send(credential);
   } else {
     const credentials = await getNotesService(user);
-    console.log(credentials);
     res.status(200).send(credentials);
   }
 }

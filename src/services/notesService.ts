@@ -15,7 +15,7 @@ export async function createNoteService(
   noteData: CreateNoteData,
   user: UserToken
 ) {
-  const { title, annotation } = noteData;
+  const { title } = noteData;
   const verifTitle = await findByTitleAndUserId(title, user.id);
   if (verifTitle)
     throw {

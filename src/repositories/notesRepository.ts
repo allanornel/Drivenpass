@@ -19,23 +19,13 @@ export async function findByTitleAndUserId(title: string, userId: number) {
       title,
     },
   });
-  // await db.query<Notes>(
-  // `SELECT * FROM notes WHERE title=$1 AND "userId"=$2`,
-  // [title, userId]
-  // );
   return result;
 }
 
 export async function insert(noteData: CreateNoteData, userId: number) {
   await client.notes.create({ data: { ...noteData, userId } });
-  // const { title, annotation } = noteData;
-  // await db.query(
-  //   `INSERT INTO notes("userId", title, annotation) VALUES ($1, $2, $3)`,
-  //   [userId, title, annotation]
-  // );
 }
 
 export async function deleteById(id: number) {
   await client.notes.delete({ where: { id } });
-  // await db.query(`DELETE FROM notes WHERE id=$1`, [id]);
 }
