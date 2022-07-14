@@ -22,7 +22,7 @@ export async function createWifiService(
   const verifTitle = await findByTitleAndUserId(title, user.id);
   if (verifTitle)
     throw {
-      type: "Credentials with this title already exists",
+      type: "Wi-fi with this title already exists",
       message: "Titulo já cadastrado para esse usuário",
       statusCode: 422,
     };
@@ -54,7 +54,7 @@ async function findWifiById(id: number) {
   if (!wifi)
     throw {
       type: "Wifi not found",
-      message: "Wi=fi não foi encontrado!",
+      message: "Wi-fi não foi encontrado!",
       statusCode: 404,
     };
   return wifi;
@@ -64,7 +64,7 @@ function checkUserId(wifi: wifis, userId: number) {
   if (wifi.userId !== userId)
     throw {
       type: "Unathourized",
-      message: "Credencial não pertence ao usuário!",
+      message: "Wi-fi não pertence ao usuário!",
       statusCode: 401,
     };
 }

@@ -59,7 +59,7 @@ function checkUserId(note: notes, userId: number) {
   if (note.userId !== userId)
     throw {
       type: "Unathourized",
-      message: "Credencial não pertence ao usuário!",
+      message: "Note não pertence ao usuário!",
       statusCode: 401,
     };
 }
