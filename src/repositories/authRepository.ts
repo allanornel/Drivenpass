@@ -9,5 +9,5 @@ export async function findByEmail(email: string) {
 }
 
 export async function insert(userData: CreateUserData) {
-  client.users.create({ data: userData });
+  await client.users.create({ data: userData });
 }
