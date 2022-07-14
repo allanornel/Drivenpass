@@ -18,6 +18,7 @@ model users {
   notes       notes[]
   wifis       wifis[]
   cards       cards[]
+  documents   documents[]
 }
 
 model credentials {
@@ -70,6 +71,26 @@ model cards {
   type           cardType
   userId         Int
   user           users    @relation(fields: [userId], references: [id])
+
+  @@unique([userId, title])
+}
+
+enum docType {
+  CNH
+  RG
+}
+
+model documents {
+  id             Int     @id @default(autoincrement())
+  title          String
+  number         String
+  issuingBody    String
+  completeName   String
+  emissionDate   String
+  expirationDate String
+  type           docType
+  userId         Int
+  user           users   @relation(fields: [userId], references: [id])
 
   @@unique([userId, title])
 }
