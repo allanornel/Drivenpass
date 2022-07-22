@@ -6,7 +6,7 @@ import router from "./routers/index.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-const app = express();
+export const app = express();
 app.use(json());
 app.use(cors());
 app.use(router);

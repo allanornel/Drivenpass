@@ -1,8 +1,4 @@
-import {
-  CreateUserData,
-  findByEmail,
-  insert,
-} from "../repositories/authRepository.js";
+import { CreateUserData, findByEmail, insert } from "../repositories/authRepository.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -19,7 +15,7 @@ export async function signUpService(userData: CreateUserData) {
     throw {
       type: "User with this email already exists",
       message: "Email já cadastrado",
-      statusCode: 422,
+      statusCode: 409,
     };
 
   userData.password = await bcrypt.hash(password, salt);
